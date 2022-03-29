@@ -28,7 +28,12 @@ module.exports.signIn = async (req, res) => {
     const token = createToken(user._id);
     res.cookie("jwt", token, { httpOnly: true, maxAge });
     res.status(200).json({ user: user._id });
-  } catch (err) {}
+  } catch (err) {
+    res.status(200).json(err);
+  }
 };
 
-module.exports.logout = (req, res) => {};
+module.exports.logout = (req, res) => {
+  res.cookie("jwt", "", { maxAge: 1 });
+  res.redirect("/");
+};
